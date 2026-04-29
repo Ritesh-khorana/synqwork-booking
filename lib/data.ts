@@ -30,7 +30,7 @@ export const locations: Location[] = [
     city: "Gurugram",
     address: "DLF Cyber Greens, DLF Cyber City, Gurugram",
     description: "Premium Meeting Rooms in DLF Cyber Greens, Near DLF Cyber Hub.",
-    heroImage:"https://synqwork.com/wp-content/uploads/2026/04/DLF-Cyber-Greens-at-DLF-CyberHub-Gurgaon-GCC-Cetre.jpg",
+    heroImage:"https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
     mapEmbedLabel: "Cyber Greens Gurugram",
   },
   {
