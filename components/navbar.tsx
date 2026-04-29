@@ -22,7 +22,7 @@ export function Navbar() {
             S
           </div>
           <div>
-            <p className="font-[Montserrat] text-lg font-semibold">Synq.work</p>
+            <p className="font-[Montserrat] text-lg font-semibold">SynqWork</p>
             <p className="text-xs text-[#404852]">Meeting Room Booking Platform</p>
           </div>
         </Link>
@@ -35,7 +35,7 @@ export function Navbar() {
           ))}
           <Link
             href="/booking"
-            className="rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition hover:bg-[#404852]"
+            className="rounded-full bg-[#FFDE59] px-5 py-3 text-sm font-medium text-black transition hover:bg-[#FCDE59]"
           >
             Book Now
           </Link>
