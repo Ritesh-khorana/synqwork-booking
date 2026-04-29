@@ -30,7 +30,19 @@ export const locations: Location[] = [
     city: "Gurugram",
     address: "DLF Cyber Greens, DLF Cyber City, Gurugram",
     description: "Premium Meeting Rooms in DLF Cyber Greens, Near DLF Cyber Hub.",
-    heroImage:"https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
+    heroImage:"import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "synqwork.com" },
+      { protocol: "https", hostname: "www.synqwork.com" },
+    ],
+  },
+};
+
+export default nextConfig;",
     mapEmbedLabel: "Cyber Greens Gurugram",
   },
   {
