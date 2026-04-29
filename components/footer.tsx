@@ -7,8 +7,7 @@ export function Footer() {
         <div>
           <p className="font-[Montserrat] text-2xl font-semibold">SynqWork</p>
           <p className="mt-3 max-w-md text-sm leading-6 text-[#404852]">
-            Premium workspace booking for teams that need polished meeting rooms, boardrooms, and collaboration spaces
-            on demand.
+            Premium Meeting Rooms and Conference Room Booking in Delhi, Gurgaon and Noida.
           </p>
         </div>
         <div>
