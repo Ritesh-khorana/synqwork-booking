@@ -65,17 +65,18 @@ export function HomePage() {
               Investor-ready premium workspace booking
             </div>
             <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[1.05] text-balance md:text-7xl">
-              Book Meeting Rooms Instantly
+              Book Meeting Rooms in Delhi, Gurgaon & Noida | Instant Booking
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#404852]">
-              Synq.work helps teams find, compare, and confirm high-trust meeting spaces across premium business
-              districts with a booking flow built for speed and confidence.
+              Book premium meeting rooms in Delhi, Gurgaon, and Noida with real-time availability. 
+Choose from 4-seater rooms, team meeting spaces, and boardrooms in prime business locations. 
+Flexible hourly pricing, instant confirmation, and enterprise-ready infrastructure.
             </p>
             <HeroSearch />
             <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-[#404852]">
-              <span>Real-time availability</span>
-              <span>Flexible pricing</span>
-              <span>Instant confirmations</span>
+              <span>Real-Time Availability</span>
+              <span>Prime Locations</span>
+              <span>Instant Confirmations</span>
             </div>
           </div>
 
@@ -86,16 +87,17 @@ export function HomePage() {
             <div className="relative h-[560px] overflow-hidden rounded-[28px]">
               <Image
                 src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
-                alt="Premium meeting room"
+                alt="meeting room in Delhi Aerocity"
                 fill
                 className="object-cover"
               />
             </div>
             <div className="glass-panel absolute bottom-8 left-8 max-w-sm rounded-[28px] p-5">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">This week&apos;s best seller</p>
-              <h3 className="mt-3 text-2xl font-semibold">Atlas Boardroom</h3>
+              <h3 className="mt-3 text-2xl font-semibold">Aerocity Conference Room</h3>
               <p className="mt-2 text-sm leading-6 text-[#404852]">
-                Investor-facing, service-backed, and bookable in under a minute.
+                Book this premium meeting room in Delhi for client meetings, presentations, and leadership discussions. 
+Includes high-speed WiFi, TV screen, and complete privacy.
               </p>
               <Link href="/booking?roomId=room_4" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold">
                 Start booking <ArrowRight className="h-4 w-4" />
@@ -108,8 +110,8 @@ export function HomePage() {
       <section className="section-shell py-12 md:py-20">
         <SectionHeading
           eyebrow="Featured Locations"
-          title="Business districts where teams actually want to meet."
-          description="Inspired by workspace leaders, designed with higher trust, faster conversion, and clearer room differentiation."
+          title="Book Meeting Rooms in Delhi, Gurgaon & Noida."
+          description="Explore premium meeting rooms across Delhi NCR including Gurgaon and Noida. Compare locations, check availability, and book instantly."
         />
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {locations.map((location) => (
@@ -132,8 +134,8 @@ export function HomePage() {
         <div className="rounded-[38px] bg-black px-6 py-10 text-white md:px-10 md:py-14">
           <SectionHeading
             eyebrow="Room Types"
-            title="Designed for focus, collaboration, and board-level moments."
-            description="The product deliberately separates use-cases so teams understand value quickly and convert with less hesitation."
+            title="Choose the Right Meeting Room for Your Needs"
+            description="Book 4 seater, 8 seater, and boardroom meeting rooms in Delhi, Gurgaon, and Noida with flexible hourly pricing and instant confirmation."
           />
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             {roomTypes.map((type) => (
@@ -150,8 +152,8 @@ export function HomePage() {
       <section className="section-shell py-12 md:py-20">
         <SectionHeading
           eyebrow="Featured Inventory"
-          title="Rooms that balance premium perception with booking speed."
-          description="Fast-loading cards, clear price anchors, and explicit availability cues lift confidence before checkout."
+          title="Book Meeting Rooms in Delhi, Gurgaon & Noida."
+          description="Explore available meeting rooms with real-time availability, pricing, and instant booking across Delhi NCR."
         />
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {featuredRooms.map((room) => (
@@ -162,9 +164,9 @@ export function HomePage() {
 
       <section className="section-shell py-12 md:py-20">
         <SectionHeading
-          eyebrow="How It Works"
-          title="A progressive booking flow that reduces drop-off."
-          description="Borrow the best mental model from ticketing and workspace platforms, then tailor it to enterprise room booking."
+          eyebrow="How to Book"
+          title="How to Book a Meeting Room in Delhi, Gurgaon & Noida"
+          description="Follow a simple 3-step process to book meeting rooms with real-time availability and instant confirmation."
         />
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {steps.map(({ icon: Icon, title, desc }) => (
@@ -202,13 +204,13 @@ export function HomePage() {
         <div className="mesh-surface rounded-[38px] border border-black/8 px-6 py-10 md:px-10 md:py-14">
           <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#404852]">Launch Synced Spaces</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#404852]">Book Meeting Rooms Instantly</p>
               <h2 className="mt-4 text-4xl font-semibold text-balance md:text-5xl">
-                Ready to host Synq.work as your meeting room sales engine?
+                Ready to Book a Meeting Room in Delhi, Gurgaon or Noida?
               </h2>
             </div>
             <Link href="/search">
-              <Button className="min-w-44">Explore Rooms</Button>
+              <Button className="min-w-44">Explore Meeting Rooms</Button>
             </Link>
           </div>
         </div>
