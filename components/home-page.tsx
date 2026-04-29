@@ -86,14 +86,14 @@ Flexible hourly pricing, instant confirmation, and enterprise-ready infrastructu
             </div>
             <div className="relative h-[560px] overflow-hidden rounded-[28px]">
               <Image
-                src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
+                src="https://synqwork.com/wp-content/uploads/2026/04/Aloft-Aerocity-managed-office-space-by-synqwork.jpg"
                 alt="meeting room in Delhi Aerocity"
                 fill
                 className="object-cover"
               />
             </div>
             <div className="glass-panel absolute bottom-8 left-8 max-w-sm rounded-[28px] p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">This week&apos;s best seller</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Most Booked Meeting Room</p>
               <h3 className="mt-3 text-2xl font-semibold">Aerocity Conference Room</h3>
               <p className="mt-2 text-sm leading-6 text-[#404852]">
                 Book this premium meeting room in Delhi for client meetings, presentations, and leadership discussions. 
