@@ -1,13 +1,14 @@
 import AdminLoginForm from "./AdminLoginForm";
 
-type SearchParams = { next?: string };
+type SearchParams = Record<string, string | string[] | undefined>;
 
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams?: SearchParams | Promise<SearchParams>;
+  searchParams?: Promise<SearchParams>;
 }) {
-  const sp = await searchParams;
-  const nextUrl = sp?.next || "/admin";
+  const sp = await (searchParams ?? Promise.resolve({}));
+  const nextRaw = sp.next;
+  const nextUrl = typeof nextRaw === "string" ? nextRaw : "/admin";
   return <AdminLoginForm nextUrl={nextUrl} />;
 }
