@@ -30,8 +30,7 @@ export const locations: Location[] = [
     city: "Gurugram",
     address: "DLF Cyber Greens, DLF Cyber City, Gurugram",
     description: "Premium Meeting Rooms in DLF Cyber Greens, Near DLF Cyber Hub.",
-    heroImage:
-      "https://synqwork.com/wp-content/uploads/2026/04/DLF-Cyber-Greens-at-DLF-CyberHub-Gurgaon-GCC-Cetre.jpg?auto=format&fit=crop&w=900&q=80",
+    heroImage:"https://synqwork.com/wp-content/uploads/2026/04/DLF-Cyber-Greens-at-DLF-CyberHub-Gurgaon-GCC-Cetre.jpg",
     mapEmbedLabel: "Cyber Greens Gurugram",
   },
   {
@@ -41,8 +40,7 @@ export const locations: Location[] = [
     city: "Gurgaon",
     address: "South City-1, Gurgaon",
     description: "Executive meeting rooms designed for investor calls, pitches, and client reviews.",
-    heroImage:
-      "https://synqwork.com/wp-content/uploads/2026/04/managed-office-and-private-office-suit-at-GSC-Towers-Gurgaon-by-synqwork-scaled-e1775822954507.jpg",
+    heroImage:"https://synqwork.com/wp-content/uploads/2026/04/managed-office-and-private-office-suit-at-GSC-Towers-Gurgaon-by-synqwork-scaled-e1775822954507.jpg",
     mapEmbedLabel: "Gurgaon",
   },
   {
