@@ -7,8 +7,8 @@ export default async function AdminLoginPage({
 }: {
   searchParams?: Promise<SearchParams>;
 }) {
-  const sp = await (searchParams ?? Promise.resolve({}));
-  const nextRaw = sp.next;
+  const sp: SearchParams = await (searchParams ?? Promise.resolve({} as SearchParams));
+  const nextRaw = sp["next"];
   const nextUrl = typeof nextRaw === "string" ? nextRaw : "/admin";
   return <AdminLoginForm nextUrl={nextUrl} />;
 }
