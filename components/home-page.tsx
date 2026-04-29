@@ -62,10 +62,10 @@ export function HomePage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/80 px-4 py-2 text-sm text-[#404852]">
               <Sparkles className="h-4 w-4 text-[#FFDE59]" />
-              Investor-ready premium workspace booking
+              Premium Meeting Rooms Booking in Delhi NCR
             </div>
             <h1 className="mt-6 max-w-3xl text-5xl font-semibold leading-[1.05] text-balance md:text-7xl">
-              Book Meeting Rooms in Delhi, Gurgaon & Noida | Instant Booking
+              Book Meeting Rooms in Delhi, Gurgaon & Noida
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#404852]">
               Book premium meeting rooms in Delhi, Gurgaon, and Noida with real-time availability. 
