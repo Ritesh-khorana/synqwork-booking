@@ -5,7 +5,7 @@ export function Footer() {
     <footer className="border-t border-black/5 bg-white/80">
       <div className="section-shell grid gap-10 py-12 md:grid-cols-[1.3fr_1fr_1fr]">
         <div>
-          <p className="font-[Montserrat] text-2xl font-semibold">Synq.work</p>
+          <p className="font-[Montserrat] text-2xl font-semibold">SynqWork</p>
           <p className="mt-3 max-w-md text-sm leading-6 text-[#404852]">
             Premium workspace booking for teams that need polished meeting rooms, boardrooms, and collaboration spaces
             on demand.
@@ -18,7 +18,6 @@ export function Footer() {
           <div className="mt-4 flex flex-col gap-3 text-sm text-[#404852]">
             <Link href="/search">Search Rooms</Link>
             <Link href="/booking">Booking Flow</Link>
-            <Link href="/admin">Admin Panel</Link>
           </div>
         </div>
         <div>
@@ -26,10 +25,14 @@ export function Footer() {
             Contact
           </p>
           <div className="mt-4 flex flex-col gap-3 text-sm text-[#404852]">
-            <span>hello@synqwork.com</span>
-            <span>+91 98765 43210</span>
-            <span>India-wide premium meeting spaces</span>
-          </div>
+  <a href="mailto:info@synq.work" className="hover:underline">
+    info@synq.work
+  </a>
+  <a href="tel:+918700128721" className="hover:underline">
+    +91-8700128721
+  </a>
+  <span>Book Meeting Room in Delhi, Gurgaon and Noida</span>
+</div>
         </div>
       </div>
     </footer>
