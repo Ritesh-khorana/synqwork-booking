@@ -178,6 +178,13 @@ export async function createBooking(input: CreateBookingInput) {
     getAllUsers(),
     getAllBookings(),
   ]);
+
+  // Prevent back-date bookings (compare yyyy-MM-dd strings).
+  const today = format(new Date(), "yyyy-MM-dd");
+  if (input.date < today) {
+    throw new Error("Bookings cannot be made for past dates. Please choose today or a future date.");
+  }
+
   const room = roomList.find((item) => item.id === input.roomId);
   if (!room) {
     throw new Error("Room not found.");

@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/select";
 
 export function HeroSearch() {
   const router = useRouter();
+  const today = new Date().toISOString().slice(0, 10);
 
   function onSubmit(formData: FormData) {
     const location = formData.get("location")?.toString();
@@ -35,7 +36,7 @@ export function HeroSearch() {
       </div>
       <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Date</label>
-        <Input type="date" name="date" className="border-0 bg-transparent px-0 py-0 pr-8" />
+        <Input type="date" name="date" min={today} className="border-0 bg-transparent px-0 py-0 pr-8" />
       </div>
       <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Team Size</label>

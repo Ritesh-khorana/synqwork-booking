@@ -152,7 +152,12 @@ export function BookingExperience() {
               <p className="text-sm uppercase tracking-[0.2em] text-[#404852]">Step 1</p>
               <h2 className="mt-3 text-3xl font-semibold">Select your date</h2>
               <div className="mt-6">
-                <Input type="date" value={form.date} onChange={(event) => setForm((current) => ({ ...current, date: event.target.value }))} />
+                <Input
+                  type="date"
+                  min={defaultDate}
+                  value={form.date}
+                  onChange={(event) => setForm((current) => ({ ...current, date: event.target.value }))}
+                />
               </div>
             </div>
           )}

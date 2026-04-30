@@ -8,6 +8,7 @@ import { Select } from "@/components/ui/select";
 export function SearchFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const today = new Date().toISOString().slice(0, 10);
 
   function onSubmit(formData: FormData) {
     const params = new URLSearchParams(searchParams.toString());
@@ -37,7 +38,7 @@ export function SearchFilters() {
       </div>
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Date</label>
-        <Input name="date" type="date" defaultValue={searchParams.get("date") ?? ""} />
+        <Input name="date" type="date" min={today} defaultValue={searchParams.get("date") ?? ""} />
       </div>
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Slot</label>
