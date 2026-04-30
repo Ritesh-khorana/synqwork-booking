@@ -39,7 +39,6 @@ export function HeroSearch() {
           <option value="Gurugram">Gurugram</option>
           <option value="New Delhi">New Delhi</option>
           <option value="Noida">Noida</option>
-          <option value="Chennai">Chennai</option>
         </Select>
       </div>
 
