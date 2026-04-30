@@ -253,9 +253,7 @@ export async function createBooking(input: CreateBookingInput) {
     attendees: input.attendees,
     notes: input.notes,
     contactNumber: input.contactNumber,
-    totalAmount: Math.round(
-      slots.reduce((sum, slot) => sum + room.pricePerHour * (slot as (typeof slotList)[number]).peakMultiplier, 0),
-    ),
+    totalAmount: Math.round(room.pricePerHour * slots.length),
     createdAt: new Date().toISOString(),
   };
 

@@ -60,7 +60,7 @@ export function BookingExperience() {
   const selectedSlot = timeSlots.find((slot) => slot.id === form.slotId);
   const total =
     selectedRoom && selectedSlots.length
-      ? Math.round(selectedSlots.reduce((sum, slot) => sum + selectedRoom.pricePerHour * slot!.peakMultiplier, 0))
+      ? Math.round(selectedRoom.pricePerHour * selectedSlots.length)
       : 0;
 
   const slotSummaryLabel = useMemo(() => {
@@ -225,7 +225,7 @@ export function BookingExperience() {
                   >
                     <p className="font-medium">{slot.label}</p>
                     <p className={`mt-2 text-sm ${form.slotIds.includes(slot.id) ? "text-white/75" : "text-[#404852]"}`}>
-                      Multiplier {slot.peakMultiplier}x
+                      {slot.startTime} - {slot.endTime}
                     </p>
                   </button>
                 ))}

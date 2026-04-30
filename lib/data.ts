@@ -211,21 +211,15 @@ export const rooms: Room[] = [
 
 export const timeSlots: TimeSlot[] = [
   { id: "slot_1", label: "09:00 - 10:00", startTime: "09:00", endTime: "10:00", peakMultiplier: 1 },
-  { id: "slot_2", label: "10:00 - 11:00", startTime: "10:00", endTime: "11:00", peakMultiplier: 1.1 },
-  { id: "slot_3", label: "11:00 - 12:00", startTime: "11:00", endTime: "12:00", peakMultiplier: 1.1 },
+  { id: "slot_2", label: "10:00 - 11:00", startTime: "10:00", endTime: "11:00", peakMultiplier: 1 },
+  { id: "slot_3", label: "11:00 - 12:00", startTime: "11:00", endTime: "12:00", peakMultiplier: 1 },
   { id: "slot_4", label: "12:00 - 13:00", startTime: "12:00", endTime: "13:00", peakMultiplier: 1 },
-  { id: "slot_5", label: "14:00 - 15:00", startTime: "14:00", endTime: "15:00", peakMultiplier: 1.15 },
-  { id: "slot_6", label: "15:00 - 16:00", startTime: "15:00", endTime: "16:00", peakMultiplier: 1.1 },
+  { id: "slot_5", label: "14:00 - 15:00", startTime: "14:00", endTime: "15:00", peakMultiplier: 1 },
+  { id: "slot_6", label: "15:00 - 16:00", startTime: "15:00", endTime: "16:00", peakMultiplier: 1 },
   { id: "slot_7", label: "16:00 - 17:00", startTime: "16:00", endTime: "17:00", peakMultiplier: 1 },
-  { id: "slot_8", label: "17:00 - 18:00", startTime: "17:00", endTime: "18:00", peakMultiplier: 0.95 },
-  { id: "slot_9", label: "18:00 - 19:00", startTime: "18:00", endTime: "19:00", peakMultiplier: 0.95 },
-  { id: "slot_10", label: "19:00 - 20:00", startTime: "19:00", endTime: "20:00", peakMultiplier: 0.9 },
-  { id: "slot_11", label: "20:00 - 21:00", startTime: "20:00", endTime: "21:00", peakMultiplier: 0.9 },
-  { id: "slot_12", label: "21:00 - 22:00", startTime: "21:00", endTime: "22:00", peakMultiplier: 0.85 },
-  { id: "slot_13", label: "22:00 - 23:00", startTime: "22:00", endTime: "23:00", peakMultiplier: 0.85 },
-  { id: "slot_14", label: "23:00 - 00:00", startTime: "23:00", endTime: "00:00", peakMultiplier: 0.8 },
-  { id: "slot_15", label: "00:00 - 01:00", startTime: "00:00", endTime: "01:00", peakMultiplier: 0.8 },
-  { id: "slot_16", label: "01:00 - 02:00", startTime: "01:00", endTime: "02:00", peakMultiplier: 0.8 },
+  { id: "slot_8", label: "17:00 - 18:00", startTime: "17:00", endTime: "18:00", peakMultiplier: 1 },
+  { id: "slot_9", label: "18:00 - 19:00", startTime: "18:00", endTime: "19:00", peakMultiplier: 1 },
+  { id: "slot_10", label: "19:00 - 20:00", startTime: "19:00", endTime: "20:00", peakMultiplier: 1 },
 ];
 
 export const bookings: Booking[] = [
