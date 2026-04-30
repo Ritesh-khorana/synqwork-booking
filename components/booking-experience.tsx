@@ -30,6 +30,7 @@ export function BookingExperience() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const presetRoomId = searchParams.get("roomId");
+  const hasPresetRoom = Boolean(presetRoomId);
   const [step, setStep] = useState(0);
   const [, startTransition] = useTransition();
   const [roomOptions, setRoomOptions] = useState<BookingRoom[]>([]);
@@ -78,7 +79,9 @@ export function BookingExperience() {
 
   useEffect(() => {
     if (presetRoomId) {
-      setStep(2);
+      // When a room is preselected (e.g. "Book Now" from listing),
+      // start at "Choose slot" so we never skip time selection.
+      setStep(1);
     }
   }, [presetRoomId]);
 
@@ -89,12 +92,20 @@ export function BookingExperience() {
 
   function nextStep() {
     setError("");
-    setStep((value) => Math.min(value + 1, 4));
+    setStep((value) => {
+      // If a room is preselected, skip "Pick room" after choosing a slot.
+      if (hasPresetRoom && value === 1) return 3;
+      return Math.min(value + 1, 4);
+    });
   }
 
   function previousStep() {
     setError("");
-    setStep((value) => Math.max(value - 1, 0));
+    setStep((value) => {
+      // If a room is preselected, skip "Pick room" when going back from details.
+      if (hasPresetRoom && value === 3) return 1;
+      return Math.max(value - 1, 0);
+    });
   }
 
   async function confirmBooking() {
