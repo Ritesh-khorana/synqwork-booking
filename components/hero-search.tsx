@@ -19,7 +19,7 @@ export function HeroSearch() {
     if (date) params.set("date", date);
     if (capacity) params.set("capacity", capacity);
 
-    router.push(/search?${params.toString()});
+    router.push(`/search?${params.toString()}`);
   }
 
   return (
