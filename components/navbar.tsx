@@ -8,8 +8,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/search", label: "Find Rooms" },
-  { href: "/booking", label: "Book" },
+  { href: "/search", label: "Find Meeting Rooms" },
 ];
 
 export function Navbar() {
@@ -21,7 +20,7 @@ export function Navbar() {
         <Link href="/" className="flex items-center">
           <Image
             src="https://synqwork.com/wp-content/uploads/2026/04/Synq-work-logo-hq-e1774606827316.png"
-            alt="Synq.work"
+            alt="Synqwork"
             width={170}
             height={44}
             priority
