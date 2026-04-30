@@ -16,16 +16,19 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/75 backdrop-blur-xl">
-      <div className="section-shell flex items-center justify-between py-4">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-black text-lg font-bold text-[#FFDE59]">
-            S
-          </div>
-          <div>
-            <p className="font-[Montserrat] text-lg font-semibold">SynqWork</p>
-            <p className="text-xs text-[#404852]">Meeting Room Booking Platform</p>
-          </div>
-        </Link>
+  <div className="section-shell flex items-center justify-between py-4">
+    
+    <Link href="/" className="flex items-center">
+      <img 
+        src="https://synqwork.com/wp-content/uploads/2026/04/Synq-work-logo-hq-e1774606827316.png"
+        alt="SynqWork Logo"
+        className="h-10 w-auto object-contain"
+      />
+    </Link>
+
+  </div>
+</header>
+
 
         <nav className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
