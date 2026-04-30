@@ -205,7 +205,7 @@ export function BookingExperience() {
                       if (form.slotId) setSlotRange(form.slotId, hours);
                     }}
                   >
-                    {[1, 2, 3, 4].map((hours) => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((hours) => (
                       <option key={hours} value={hours}>
                         {hours} hour{hours > 1 ? "s" : ""}
                       </option>

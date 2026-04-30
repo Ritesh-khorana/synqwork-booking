@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { timeSlots } from "@/lib/data";
 
 export function SearchFilters() {
   const router = useRouter();
@@ -44,14 +45,11 @@ export function SearchFilters() {
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Slot</label>
         <Select name="slot" defaultValue={searchParams.get("slot") ?? ""}>
           <option value="">Any slot</option>
-          <option value="slot_1">09:00 - 10:00</option>
-          <option value="slot_2">10:00 - 11:00</option>
-          <option value="slot_3">11:00 - 12:00</option>
-          <option value="slot_4">12:00 - 13:00</option>
-          <option value="slot_5">14:00 - 15:00</option>
-          <option value="slot_6">15:00 - 16:00</option>
-          <option value="slot_7">16:00 - 17:00</option>
-          <option value="slot_8">17:00 - 18:00</option>
+          {timeSlots.map((slot) => (
+            <option key={slot.id} value={slot.id}>
+              {slot.label}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
