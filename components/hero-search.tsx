@@ -39,7 +39,7 @@ export function HeroSearch() {
       </div>
       <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Team Size</label>
-        <Input type="number" min="1" name="capacity" placeholder="4 or more" className="border-0 bg-transparent px-0 py-0 pr-8" />
+        <Input type="number" min="1" name="capacity" placeholder="4 or more" className="border-0 bg-transparent px-0 py-0 pr-18" />
       </div>
       <Button variant="secondary" className="h-full min-h-[68px] px-7 whitespace-nowrap">
         <Search className="mr-2 h-4 w-4" />
