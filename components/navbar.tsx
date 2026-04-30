@@ -16,34 +16,39 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/75 backdrop-blur-xl">
-      <div className="section-shell flex items-center justify-between py-4">
+      <div className="section-shell flex items-center gap-6 py-4">
         <Link href="/" className="flex items-center">
           <Image
             src="https://synqwork.com/wp-content/uploads/2026/04/Synq-work-logo-hq-e1774606827316.png"
-            alt="Synqwork"
-            width={170}
-            height={44}
+            alt="Synq.work"
+            width={160}
+            height={40}
             priority
             className="h-10 w-auto"
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="ml-auto hidden items-center justify-end gap-6 md:flex">
           {links.map((link) => (
-            <Link key={link.href} href={link.href} className="text-sm text-[#404852] transition hover:text-black">
+            <Link
+              key={link.href}
+              href={link.href}
+              className="whitespace-nowrap text-sm text-[#404852] transition hover:text-black"
+            >
               {link.label}
             </Link>
           ))}
+
           <Link
             href="/booking"
-            className="rounded-full bg-[#FFDE59] px-5 py-3 text-sm font-medium text-black transition hover:bg-[#FCDE59]"
+            className="whitespace-nowrap rounded-full bg-[#FFDE59] px-4 py-2 text-sm font-semibold text-black transition hover:bg-[#FCDE59]"
           >
             Book Now
           </Link>
         </nav>
 
         <button
-          className="rounded-full border border-black/10 p-3 md:hidden"
+          className="ml-auto rounded-full border border-black/10 p-3 md:hidden"
           onClick={() => setOpen((value) => !value)}
           aria-label="Toggle navigation"
         >
@@ -61,7 +66,7 @@ export function Navbar() {
             ))}
             <Link
               href="/booking"
-              className="rounded-full bg-[#FFDE59] px-5 py-3 text-center text-sm font-medium text-black transition hover:bg-[#FCDE59]"
+              className="rounded-full bg-[#FFDE59] px-4 py-2 text-center text-sm font-semibold text-black transition hover:bg-[#FCDE59]"
               onClick={() => setOpen(false)}
             >
               Book Now
@@ -72,3 +77,4 @@ export function Navbar() {
     </header>
   );
 }
+Message Md Zunaid
