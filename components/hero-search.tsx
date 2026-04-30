@@ -25,15 +25,15 @@ export function HeroSearch() {
   return (
     <form
       action={onSubmit}
-      className="glass-panel mt-10 grid gap-4 rounded-[32px] p-4 md:grid-cols-[1.45fr_1fr_0.85fr_auto] md:items-end"
+      className="glass-panel mt-10 flex flex-col gap-4 rounded-[32px] p-4 md:flex-row md:items-end md:gap-3"
     >
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
+      <div className="w-full rounded-[24px] border border-black/5 bg-white px-4 py-3 md:w-[320px]">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
           Location
         </label>
         <Select
           name="location"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-10 text-base leading-6 text-black"
+          className="border-0 bg-transparent px-0 py-0 pr-10 text-base leading-6 text-black"
         >
           <option value="">Search by city</option>
           <option value="Gurugram">Gurugram</option>
@@ -43,18 +43,18 @@ export function HeroSearch() {
         </Select>
       </div>
 
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
+      <div className="w-full rounded-[24px] border border-black/5 bg-white px-4 py-3 md:w-[240px]">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
           Date
         </label>
         <Input
           type="date"
           name="date"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-3 text-base leading-6 text-black"
+          className="border-0 bg-transparent px-0 py-0 pr-2 text-base leading-6 text-black"
         />
       </div>
 
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
+      <div className="w-full rounded-[24px] border border-black/5 bg-white px-4 py-3 md:w-[190px]">
         <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
           Team Size
         </label>
@@ -63,11 +63,14 @@ export function HeroSearch() {
           min="1"
           name="capacity"
           placeholder="4 or more"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-3 text-base leading-6 text-black"
+          className="border-0 bg-transparent px-0 py-0 pr-2 text-base leading-6 text-black"
         />
       </div>
 
-      <Button variant="secondary" className="h-full min-h-[68px] px-7 whitespace-nowrap">
+      <Button
+        variant="secondary"
+        className="min-h-[68px] w-full justify-center whitespace-nowrap px-7 md:w-[190px]"
+      >
         <Search className="mr-2 h-4 w-4" />
         Find Rooms
       </Button>
