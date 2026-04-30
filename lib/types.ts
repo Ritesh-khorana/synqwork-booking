@@ -45,6 +45,7 @@ export type Booking = {
   userId: string;
   roomId: string;
   date: string;
+  slotIds?: string[];
   startTime: string;
   endTime: string;
   status: BookingStatus;

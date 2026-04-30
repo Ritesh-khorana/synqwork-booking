@@ -53,6 +53,7 @@ const bookingSchema = new Schema(
     userId: { type: String, required: true, index: true },
     roomId: { type: String, required: true, index: true },
     date: { type: String, required: true, index: true },
+    slotIds: { type: [String], default: [] },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
     status: { type: String, enum: ["confirmed", "pending", "cancelled"], required: true },

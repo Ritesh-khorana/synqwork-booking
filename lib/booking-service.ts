@@ -9,7 +9,8 @@ type CreateBookingInput = {
   userId?: string;
   roomId: string;
   date: string;
-  slotId: string;
+  slotId?: string;
+  slotIds?: string[];
   name: string;
   email: string;
   contactNumber: string;
@@ -125,13 +126,17 @@ export async function getAvailabilityForRoom(
   date = format(new Date(), "yyyy-MM-dd"),
 ): Promise<AvailabilityResponse> {
   const [bookingList, slotList] = await Promise.all([getAllBookings(), getTimeSlots()]);
-  const reservedSlots = bookingList
-    .filter((booking) => booking.roomId === roomId && booking.date === date && booking.status !== "cancelled")
-    .map((booking) => `${booking.startTime}-${booking.endTime}`);
 
-  const availableSlots = slotList
-    .filter((slot) => !reservedSlots.includes(`${slot.startTime}-${slot.endTime}`))
-    .map((slot) => slot.id);
+  const reservedSlotIds = bookingList
+    .filter((booking) => booking.roomId === roomId && booking.date === date && booking.status !== "cancelled")
+    .flatMap((booking) => {
+      if (Array.isArray(booking.slotIds) && booking.slotIds.length > 0) return booking.slotIds;
+      const legacy = slotList.find((slot) => slot.startTime === booking.startTime && slot.endTime === booking.endTime);
+      return legacy ? [legacy.id] : [];
+    });
+
+  const reserved = new Set(reservedSlotIds);
+  const availableSlots = slotList.filter((slot) => !reserved.has(slot.id)).map((slot) => slot.id);
 
   return {
     roomId,
@@ -190,14 +195,37 @@ export async function createBooking(input: CreateBookingInput) {
     throw new Error("Room not found.");
   }
 
-  const slot = await getSlotById(input.slotId);
-  if (!slot) {
-    throw new Error("Time slot not found.");
+  const slotList = await getTimeSlots();
+  const requestedSlotIds = (input.slotIds && input.slotIds.length > 0 ? input.slotIds : input.slotId ? [input.slotId] : [])
+    .filter(Boolean) as string[];
+
+  if (requestedSlotIds.length === 0) {
+    throw new Error("Please select a time slot.");
   }
 
+  // Ensure requested slots exist and are consecutive.
+  const indexById = new Map(slotList.map((slot, index) => [slot.id, index]));
+  const ordered = [...requestedSlotIds].sort((a, b) => (indexById.get(a) ?? 1e9) - (indexById.get(b) ?? 1e9));
+  const slots = ordered.map((id) => slotList.find((slot) => slot.id === id)).filter(Boolean);
+
+  if (slots.length !== ordered.length) {
+    throw new Error("One or more selected time slots are invalid.");
+  }
+
+  for (let i = 1; i < ordered.length; i += 1) {
+    const prevIndex = indexById.get(ordered[i - 1]);
+    const nextIndex = indexById.get(ordered[i]);
+    if (prevIndex === undefined || nextIndex === undefined || nextIndex !== prevIndex + 1) {
+      throw new Error("Please select consecutive time slots (for 2-3 hour bookings).");
+    }
+  }
+
+  const startSlot = slots[0] as (typeof slotList)[number];
+  const endSlot = slots[slots.length - 1] as (typeof slotList)[number];
+
   const availability = await getAvailabilityForRoom(input.roomId, input.date);
-  if (!availability.availableSlots.includes(input.slotId)) {
-    throw new Error("Selected slot is no longer available.");
+  if (!ordered.every((id) => availability.availableSlots.includes(id))) {
+    throw new Error("One or more selected slots are no longer available.");
   }
 
   const existingUser = userList.find((user) => user.email === input.email);
@@ -218,13 +246,16 @@ export async function createBooking(input: CreateBookingInput) {
     userId: customer.id,
     roomId: room.id,
     date: input.date,
-    startTime: slot.startTime,
-    endTime: slot.endTime,
+    slotIds: ordered,
+    startTime: startSlot.startTime,
+    endTime: endSlot.endTime,
     status: "confirmed",
     attendees: input.attendees,
     notes: input.notes,
     contactNumber: input.contactNumber,
-    totalAmount: Math.round(room.pricePerHour * slot.peakMultiplier),
+    totalAmount: Math.round(
+      slots.reduce((sum, slot) => sum + room.pricePerHour * (slot as (typeof slotList)[number]).peakMultiplier, 0),
+    ),
     createdAt: new Date().toISOString(),
   };
 
@@ -243,7 +274,7 @@ export async function createBooking(input: CreateBookingInput) {
     user: customer,
     room,
     location: locationList.find((location) => location.id === room.locationId) ?? null,
-    slot,
+    slot: startSlot,
   };
 }
 

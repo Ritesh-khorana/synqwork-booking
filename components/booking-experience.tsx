@@ -37,9 +37,11 @@ export function BookingExperience() {
   const [availability, setAvailability] = useState<Record<string, string[]>>({});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [durationHours, setDurationHours] = useState(1);
   const [form, setForm] = useState({
     date: defaultDate,
     slotId: "",
+    slotIds: [] as string[],
     roomId: presetRoomId ?? "",
     name: "",
     email: "",
@@ -51,8 +53,33 @@ export function BookingExperience() {
 
   const selectedRoom = useMemo(() => roomOptions.find((room) => room.id === form.roomId), [form.roomId, roomOptions]);
   const selectedLocation = selectedRoom?.location;
+  const selectedSlots = useMemo(
+    () => form.slotIds.map((id) => timeSlots.find((slot) => slot.id === id)).filter(Boolean),
+    [form.slotIds],
+  );
   const selectedSlot = timeSlots.find((slot) => slot.id === form.slotId);
-  const total = selectedRoom && selectedSlot ? Math.round(selectedRoom.pricePerHour * selectedSlot.peakMultiplier) : 0;
+  const total =
+    selectedRoom && selectedSlots.length
+      ? Math.round(selectedSlots.reduce((sum, slot) => sum + selectedRoom.pricePerHour * slot!.peakMultiplier, 0))
+      : 0;
+
+  const slotSummaryLabel = useMemo(() => {
+    if (selectedSlots.length === 0) return "Not selected";
+    const start = selectedSlots[0]!.startTime;
+    const end = selectedSlots[selectedSlots.length - 1]!.endTime;
+    return `${start} - ${end} (${selectedSlots.length}h)`;
+  }, [selectedSlots]);
+
+  function setSlotRange(startSlotId: string, hours: number) {
+    const startIndex = timeSlots.findIndex((slot) => slot.id === startSlotId);
+    if (startIndex < 0) return;
+    const range = timeSlots.slice(startIndex, startIndex + hours).map((slot) => slot.id);
+    if (range.length !== hours) {
+      setError("Not enough consecutive slots available for that duration.");
+      return;
+    }
+    setForm((current) => ({ ...current, slotId: startSlotId, slotIds: range }));
+  }
 
   useEffect(() => {
     startTransition(async () => {
@@ -109,7 +136,7 @@ export function BookingExperience() {
   }
 
   async function confirmBooking() {
-    if (!form.roomId || !form.slotId || !form.name || !form.email || !form.contactNumber || !form.company) {
+    if (!form.roomId || form.slotIds.length === 0 || !form.name || !form.email || !form.contactNumber || !form.company) {
       setError("Please complete all booking details before confirming.");
       return;
     }
@@ -166,18 +193,38 @@ export function BookingExperience() {
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-[#404852]">Step 2</p>
               <h2 className="mt-3 text-3xl font-semibold">Choose your time slot</h2>
+              <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <p className="text-sm leading-7 text-[#404852]">Select a start time and duration (1-4 hours).</p>
+                <div className="w-full md:max-w-52">
+                  <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Duration</label>
+                  <Select
+                    value={String(durationHours)}
+                    onChange={(event) => {
+                      const hours = Number(event.target.value);
+                      setDurationHours(hours);
+                      if (form.slotId) setSlotRange(form.slotId, hours);
+                    }}
+                  >
+                    {[1, 2, 3, 4].map((hours) => (
+                      <option key={hours} value={hours}>
+                        {hours} hour{hours > 1 ? "s" : ""}
+                      </option>
+                    ))}
+                  </Select>
+                </div>
+              </div>
               <div className="mt-6 grid gap-3 md:grid-cols-2">
                 {timeSlots.map((slot) => (
                   <button
                     key={slot.id}
                     type="button"
-                    onClick={() => setForm((current) => ({ ...current, slotId: slot.id }))}
+                    onClick={() => setSlotRange(slot.id, durationHours)}
                     className={`rounded-3xl border p-4 text-left transition ${
-                      form.slotId === slot.id ? "border-black bg-black text-white" : "border-black/10 bg-[#f8f8f6]"
+                      form.slotIds.includes(slot.id) ? "border-black bg-black text-white" : "border-black/10 bg-[#f8f8f6]"
                     }`}
                   >
                     <p className="font-medium">{slot.label}</p>
-                    <p className={`mt-2 text-sm ${form.slotId === slot.id ? "text-white/75" : "text-[#404852]"}`}>
+                    <p className={`mt-2 text-sm ${form.slotIds.includes(slot.id) ? "text-white/75" : "text-[#404852]"}`}>
                       Multiplier {slot.peakMultiplier}x
                     </p>
                   </button>
@@ -201,7 +248,10 @@ export function BookingExperience() {
               </div>
               <div className="mt-6 grid gap-4">
                 {filteredRooms.map((room) => {
-                  const available = !form.slotId || (availability[room.id] ?? []).includes(form.slotId);
+                  const requested = form.slotIds.length ? form.slotIds : form.slotId ? [form.slotId] : [];
+                  const available =
+                    requested.length === 0 ||
+                    requested.every((slotId) => (availability[room.id] ?? []).includes(slotId));
                   const isSelected = form.roomId === room.id;
                   const location = room.location;
 
@@ -295,7 +345,7 @@ export function BookingExperience() {
               <Button
                 onClick={nextStep}
                 disabled={
-                  (step === 1 && !form.slotId) ||
+                  (step === 1 && form.slotIds.length === 0) ||
                   (step === 2 && !form.roomId) ||
                   (step === 3 && (!form.name || !form.email || !form.contactNumber || !form.company))
                 }
@@ -333,7 +383,7 @@ export function BookingExperience() {
           <div className="mt-8 rounded-[28px] bg-white/8 p-5">
             <div className="flex items-center justify-between text-sm text-white/70">
               <span>Time slot</span>
-              <span>{selectedSlot?.label ?? "Not selected"}</span>
+              <span>{slotSummaryLabel}</span>
             </div>
             <div className="mt-3 flex items-center justify-between text-sm text-white/70">
               <span>Base rate</span>
