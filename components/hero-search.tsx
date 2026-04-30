@@ -25,39 +25,52 @@ export function HeroSearch() {
   return (
     <form
       action={onSubmit}
-      className="glass-panel mt-10 grid gap-4 rounded-[32px] p-4 md:grid-cols-[1.45fr_1fr_0.85fr_auto] md:items-end"
+      className="glass-panel mt-10 grid gap-4 rounded-[32px] p-4 md:grid-cols-[1.35fr_1.1fr_0.9fr_auto] md:items-stretch md:gap-3"
     >
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Location</label>
+      <div className="min-w-0 rounded-[24px] border border-black/5 bg-white px-4 py-3 md:h-[92px] md:py-4">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
+          Location
+        </label>
         <Select
           name="location"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-10 text-base leading-6 text-black"
+          className="h-8 w-full border-0 bg-transparent px-0 py-0 pr-10 text-[17px] leading-8 text-black"
         >
           <option value="">Search by city</option>
           <option value="Gurugram">Gurugram</option>
           <option value="New Delhi">New Delhi</option>
           <option value="Noida">Noida</option>
+          <option value="Chennai">Chennai</option>
         </Select>
       </div>
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Date</label>
+
+      <div className="min-w-0 rounded-[24px] border border-black/5 bg-white px-4 py-3 md:h-[92px] md:py-4">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
+          Date
+        </label>
         <Input
           type="date"
           name="date"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-3 text-base leading-6 text-black"
+          className="h-8 border-0 bg-transparent px-0 py-0 pr-6 text-[17px] leading-8 text-black"
         />
       </div>
-      <div className="rounded-[24px] border border-black/5 bg-white px-4 py-3">
-        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">Team Size</label>
+
+      <div className="min-w-0 rounded-[24px] border border-black/5 bg-white px-4 py-3 md:h-[92px] md:py-4">
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.18em] text-[#404852]">
+          Team Size
+        </label>
         <Input
           type="number"
           min="1"
           name="capacity"
           placeholder="4 or more"
-          className="min-w-0 border-0 bg-transparent px-1 py-1.5 pr-3 text-base leading-6 text-black"
+          className="h-8 border-0 bg-transparent px-0 py-0 pr-4 text-[17px] leading-8 text-black"
         />
       </div>
-      <Button variant="secondary" className="h-full min-h-[68px] px-7 whitespace-nowrap">
+
+      <Button
+        variant="secondary"
+        className="h-[68px] whitespace-nowrap px-7 md:h-[92px]"
+      >
         <Search className="mr-2 h-4 w-4" />
         Find Rooms
       </Button>
