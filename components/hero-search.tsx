@@ -1,3 +1,13 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+
+export function HeroSearch() {
+  const router = useRouter();
 
   function onSubmit(formData: FormData) {
     const location = formData.get("location")?.toString();
