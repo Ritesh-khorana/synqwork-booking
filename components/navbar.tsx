@@ -66,7 +66,7 @@ export function Navbar() {
             ))}
             <Link
               href="/booking"
-              className="rounded-full bg-[#FFDE59] px-4 py-2 text-center text-sm font-semibold text-black transition hover:bg-[#FCDE59]"
+              className="rounded-full bg-[#FFDE59] px-3 py-1 text-center text-sm font-semibold text-black transition hover:bg-[#FCDE59]"
               onClick={() => setOpen(false)}
             >
               Book Now
