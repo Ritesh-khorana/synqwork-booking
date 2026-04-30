@@ -14,7 +14,7 @@ export function SearchFilters() {
   function onSubmit(formData: FormData) {
     const params = new URLSearchParams(searchParams.toString());
 
-    ["location", "date", "slot", "capacity", "minPrice", "maxPrice"].forEach((key) => {
+    ["location", "date", "slot", "capacity"].forEach((key) => {
       const value = formData.get(key)?.toString();
       if (value) params.set(key, value);
       else params.delete(key);
@@ -24,7 +24,7 @@ export function SearchFilters() {
   }
 
   return (
-    <form action={onSubmit} className="glass-panel grid gap-4 rounded-[30px] p-5 md:grid-cols-6 md:items-end">
+    <form action={onSubmit} className="glass-panel grid gap-4 rounded-[30px] p-5 md:grid-cols-5 md:items-end">
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Location</label>
         <Select name="location" defaultValue={searchParams.get("location") ?? ""}>
@@ -55,13 +55,6 @@ export function SearchFilters() {
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Capacity</label>
         <Input name="capacity" type="number" min="1" placeholder="4+" defaultValue={searchParams.get("capacity") ?? ""} />
-      </div>
-      <div>
-        <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Price Range</label>
-        <div className="grid grid-cols-2 gap-2">
-          <Input name="minPrice" type="number" placeholder="Min" defaultValue={searchParams.get("minPrice") ?? ""} />
-          <Input name="maxPrice" type="number" placeholder="Max" defaultValue={searchParams.get("maxPrice") ?? ""} />
-        </div>
       </div>
       <Button variant="secondary" className="h-[50px]">
         Find Rooms
