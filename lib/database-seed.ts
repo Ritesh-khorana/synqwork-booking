@@ -10,7 +10,7 @@ export async function ensureDatabaseSeeded() {
 
   // Keep Mongo in sync with the bundled "seed" dataset:
   // - Insert missing entities (by stable `id`)
-  // - Update locations/rooms/slots if seed evolves
+  // - Never overwrite admin edits to locations/rooms/slots (Vercel cold starts would revert them)
   // - Never overwrite existing user role or existing bookings
   await Promise.all([
     UserModel.bulkWrite(
@@ -27,7 +27,7 @@ export async function ensureDatabaseSeeded() {
       locations.map((location) => ({
         updateOne: {
           filter: { id: location.id },
-          update: { $set: location },
+          update: { $setOnInsert: location },
           upsert: true,
         },
       })),
@@ -37,7 +37,7 @@ export async function ensureDatabaseSeeded() {
       rooms.map((room) => ({
         updateOne: {
           filter: { id: room.id },
-          update: { $set: room },
+          update: { $setOnInsert: room },
           upsert: true,
         },
       })),
@@ -47,7 +47,7 @@ export async function ensureDatabaseSeeded() {
       timeSlots.map((slot) => ({
         updateOne: {
           filter: { id: slot.id },
-          update: { $set: slot },
+          update: { $setOnInsert: slot },
           upsert: true,
         },
       })),
