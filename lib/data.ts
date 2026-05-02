@@ -25,9 +25,9 @@ export const users: User[] = [
 export const locations: Location[] = [
   {
     id: "loc_1",
-    slug: "gurugram-cyber-greens",
+    slug: "gurgaon-cyber-greens",
     name: "Cyber Greens",
-    city: "Gurugram",
+    city: "Gurgaon",
     address: "DLF Cyber Greens, DLF Cyber City, Gurugram",
     description: "Premium Meeting Rooms in DLF Cyber Greens, Near DLF Cyber Hub.",
     heroImage:"https://synqwork.com/wp-content/uploads/2026/04/DLF-Cyber-Greens-at-DLF-CyberHub-Gurgaon-GCC-Cetre.jpg",
@@ -35,7 +35,7 @@ export const locations: Location[] = [
   },
   {
     id: "loc_2",
-    slug: "new-delhi-gsc",
+    slug: "gurgaon-gsc",
     name: "GSC",
     city: "Gurgaon",
     address: "South City-1, Gurgaon",
@@ -76,7 +76,7 @@ export const rooms: Room[] = [
     type: "Focus Room",
     capacity: 4,
     pricePerHour: 900,
-    amenities: ["4K Display", "Video Conferencing", "High-Speed WiFi"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
     rating: 4.7,
@@ -92,7 +92,7 @@ export const rooms: Room[] = [
     type: "Meeting Room",
     capacity: 8,
     pricePerHour: 1600,
-    amenities: ["Whiteboard", "Conference Cam", "Coffee Service"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
     rating: 4.8,
@@ -108,7 +108,7 @@ export const rooms: Room[] = [
     type: "Meeting Room",
     capacity: 8,
     pricePerHour: 1400,
-    amenities: ["Workshop Wall", "Screen Casting", "Snacks"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=900&q=80",
     rating: 4.6,
@@ -123,7 +123,7 @@ export const rooms: Room[] = [
     type: "Boardroom",
     capacity: 14,
     pricePerHour: 3200,
-    amenities: ["Concierge", "65-inch Screen", "Private Pantry"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80",
     rating: 4.9,
@@ -139,7 +139,7 @@ export const rooms: Room[] = [
     type: "Meeting Room",
     capacity: 6,
     pricePerHour: 1200,
-    amenities: ["Natural Light", "Zoom Setup", "Soundproofing"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80",
     rating: 4.5,
@@ -154,7 +154,7 @@ export const rooms: Room[] = [
     type: "Boardroom",
     capacity: 10,
     pricePerHour: 2600,
-    amenities: ["Dual Displays", "AC Controls", "Tea & Coffee"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?auto=format&fit=crop&w=900&q=80",
     rating: 4.8,
@@ -169,7 +169,7 @@ export const rooms: Room[] = [
     type: "Meeting Room",
     capacity: 6,
     pricePerHour: 1500,
-    amenities: ["55-inch Display", "Video Conferencing", "Coffee & Tea"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80",
     rating: 4.7,
@@ -185,7 +185,7 @@ export const rooms: Room[] = [
     type: "Focus Room",
     capacity: 4,
     pricePerHour: 950,
-    amenities: ["Soundproofing", "High-Speed WiFi", "Screen Casting"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
     rating: 4.6,
@@ -200,7 +200,7 @@ export const rooms: Room[] = [
     type: "Boardroom",
     capacity: 12,
     pricePerHour: 2800,
-    amenities: ["Concierge", "65-inch Screen", "Whiteboard Wall"],
+    amenities: ["AV Display", "White Board", "High-Speed WiFi", "Tea/Coffee"],
     image:
       "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=900&q=80",
     rating: 4.8,
