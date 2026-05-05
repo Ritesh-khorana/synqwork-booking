@@ -1,6 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 
-let cached: ReturnType<typeof createClient> | null = null;
+// We are not using generated Supabase Database types yet.
+// Type the client as `any` to avoid `never` inference in insert/update calls.
+let cached: ReturnType<typeof createClient<any>> | null = null;
 
 export function getSupabaseClient() {
   if (cached) return cached;
@@ -14,7 +16,7 @@ export function getSupabaseClient() {
     );
   }
 
-  cached = createClient(supabaseUrl, supabaseAnonKey, {
+  cached = createClient<any>(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -24,4 +26,3 @@ export function getSupabaseClient() {
 
   return cached;
 }
-
