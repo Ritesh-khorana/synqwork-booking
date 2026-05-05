@@ -236,21 +236,22 @@ export async function createRoom(input: {
   isActive?: boolean;
 }) {
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from("rooms")
-    .insert({
-      centre_id: input.centreId,
-      name: input.name,
-      capacity: input.capacity,
-      price_per_hour: input.pricePerHour,
-      image_url: input.imageUrl ?? null,
-      description: input.description ?? null,
-      is_active: input.isActive ?? true,
-    })
-    .select("*")
-    .single();
+  const row = {
+    centre_id: input.centreId,
+    name: input.name,
+    capacity: input.capacity,
+    price_per_hour: input.pricePerHour,
+    image_url: input.imageUrl ?? null,
+    description: input.description ?? null,
+    is_active: input.isActive ?? true,
+  };
+
+  // Supabase types can infer `never` without generated Database types; use array insert and pick first row.
+  const { data, error } = await supabase.from("rooms").insert([row]).select("*");
   if (error) throw new Error(error.message);
-  return data as RoomRow;
+  const created = Array.isArray(data) ? data[0] : data;
+  if (!created) throw new Error("Unable to create room.");
+  return created as RoomRow;
 }
 
 export async function updateRoom(id: string, input: Partial<{
@@ -302,27 +303,27 @@ export async function createBooking(input: {
   const { data: room, error: roomErr } = await supabase.from("rooms").select("centre_id").eq("id", input.roomId).single();
   if (roomErr) throw new Error(roomErr.message);
 
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert({
-      room_id: input.roomId,
-      centre_id: (room as Pick<RoomRow, "centre_id">).centre_id,
-      name: input.name,
-      email: input.email,
-      phone: input.phone,
-      company_name: input.companyName ?? null,
-      date: input.date,
-      start_time: input.startTime,
-      end_time: input.endTime,
-      total_hours: input.totalHours,
-      total_amount: input.totalAmount,
-      notes: input.notes ?? null,
-      status: "confirmed",
-    })
-    .select("*")
-    .single();
+  const bookingRow = {
+    room_id: input.roomId,
+    centre_id: (room as Pick<RoomRow, "centre_id">).centre_id,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    company_name: input.companyName ?? null,
+    date: input.date,
+    start_time: input.startTime,
+    end_time: input.endTime,
+    total_hours: input.totalHours,
+    total_amount: input.totalAmount,
+    notes: input.notes ?? null,
+    status: "confirmed" as const,
+  };
+
+  const { data, error } = await supabase.from("bookings").insert([bookingRow]).select("*");
   if (error) throw new Error(error.message);
-  return data as BookingRow;
+  const created = Array.isArray(data) ? data[0] : data;
+  if (!created) throw new Error("Unable to create booking.");
+  return created as BookingRow;
 }
 
 export async function getAdminBookings() {
