@@ -2,6 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // We are not using generated Supabase Database types yet.
 // Type the client as `any` to avoid `never` inference in insert/update calls.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached: ReturnType<typeof createClient<any>> | null = null;
 
 export function getSupabaseClient() {
@@ -16,6 +17,7 @@ export function getSupabaseClient() {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cached = createClient<any>(supabaseUrl, supabaseAnonKey, {
     auth: {
       persistSession: true,
