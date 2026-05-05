@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAdminBookings, getAdminSummary } from "@/lib/booking-service";
+import { getAdminBookings, getAdminSummary } from "@/lib/supabase-service";
 
 export async function GET() {
   return NextResponse.json({

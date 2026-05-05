@@ -55,6 +55,8 @@ export function AdminConsole() {
   const [locations, setLocations] = useState<AdminLocation[]>([]);
   const [payload, setPayload] = useState<AdminPayload | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [adminError, setAdminError] = useState("");
+  const [dbConfigured, setDbConfigured] = useState(true);
   const [form, setForm] = useState({
     name: "",
     type: "Meeting Room",
@@ -70,17 +72,20 @@ export function AdminConsole() {
   });
 
   async function refresh() {
-    const [roomsResponse, bookingsResponse, locationsResponse] = await Promise.all([
+    const [roomsResponse, bookingsResponse, locationsResponse, statusResponse] = await Promise.all([
       fetch("/api/admin/rooms"),
       fetch("/api/admin/bookings"),
       fetch("/api/locations"),
+      fetch("/api/admin/status"),
     ]);
     const roomsData = await roomsResponse.json();
     const bookingsData = await bookingsResponse.json();
     const locationsData = await locationsResponse.json();
+    const statusData = await statusResponse.json().catch(() => ({}));
     setRooms(roomsData.rooms);
     setPayload(bookingsData);
     setLocations(locationsData.locations ?? []);
+    setDbConfigured(Boolean(statusData.supabaseConfigured));
   }
 
   useEffect(() => {
@@ -88,6 +93,7 @@ export function AdminConsole() {
   }, []);
 
   async function saveRoom() {
+    setAdminError("");
     const payload = {
       name: form.name,
       slug: form.slug || form.name.toLowerCase().replaceAll(" ", "-"),
@@ -104,17 +110,27 @@ export function AdminConsole() {
     };
 
     if (editingId) {
-      await fetch(`/api/admin/rooms/${editingId}`, {
+      const response = await fetch(`/api/admin/rooms/${editingId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setAdminError(data?.error ?? "Unable to update room.");
+        return;
+      }
     } else {
-      await fetch("/api/admin/rooms", {
+      const response = await fetch("/api/admin/rooms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setAdminError(data?.error ?? "Unable to create room.");
+        return;
+      }
     }
 
     setEditingId(null);
@@ -159,6 +175,14 @@ export function AdminConsole() {
     <div className="mt-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
       <div className="rounded-[30px] border border-black/8 bg-white p-6">
         <h2 className="text-2xl font-semibold">{editingId ? "Edit Room" : "Add New Room"}</h2>
+        {!dbConfigured ? (
+          <div className="mt-4 rounded-[24px] border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            Persistence is disabled because Supabase is not configured. Add{" "}
+            <span className="font-semibold">NEXT_PUBLIC_SUPABASE_URL</span> and{" "}
+            <span className="font-semibold">NEXT_PUBLIC_SUPABASE_ANON_KEY</span> in Vercel Environment Variables.
+          </div>
+        ) : null}
+        {adminError ? <p className="mt-4 text-sm font-medium text-rose-600">{adminError}</p> : null}
         <div className="mt-5 grid gap-4">
           <Input placeholder="Room name" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} />
           <Select value={form.type} onChange={(event) => setForm((current) => ({ ...current, type: event.target.value }))}>

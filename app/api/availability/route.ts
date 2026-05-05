@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAvailabilityForRoom, getAvailabilitySnapshot } from "@/lib/booking-service";
+import { getAvailabilityForRoom, getAvailabilitySnapshot } from "@/lib/supabase-service";
 
 export async function GET(request: NextRequest) {
   const roomId = request.nextUrl.searchParams.get("roomId");

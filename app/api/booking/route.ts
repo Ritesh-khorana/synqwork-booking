@@ -1,14 +1,63 @@
 import { NextResponse } from "next/server";
-import { createBooking } from "@/lib/booking-service";
+import { timeSlots } from "@/lib/data";
+import { getRoomById, createBooking as createSupabaseBooking } from "@/lib/supabase-service";
 
 export async function POST(request: Request) {
   const payload = await request.json();
 
   try {
-    const result = await createBooking(payload);
+    const roomId = payload.roomId as string | undefined;
+    const date = payload.date as string | undefined;
+    const slotIds = (payload.slotIds as string[] | undefined) ?? [];
+    const name = payload.name as string | undefined;
+    const email = payload.email as string | undefined;
+    const phone = (payload.contactNumber as string | undefined) ?? (payload.phone as string | undefined);
+    const companyName = payload.company as string | undefined;
+    const notes = payload.notes as string | undefined;
+
+    if (!roomId || !date || slotIds.length === 0 || !name || !email || !phone) {
+      return NextResponse.json({ error: "Missing required booking details." }, { status: 400 });
+    }
+
+    const room = await getRoomById(roomId);
+    if (!room) return NextResponse.json({ error: "Room not found." }, { status: 404 });
+
+    const slots = slotIds.map((id) => timeSlots.find((s) => s.id === id)).filter(Boolean);
+    if (slots.length !== slotIds.length) {
+      return NextResponse.json({ error: "Invalid time slot selection." }, { status: 400 });
+    }
+
+    const startTime = slots[0]!.startTime;
+    const endTime = slots[slots.length - 1]!.endTime;
+    const totalHours = slots.length;
+    const totalAmount = Math.round(room.pricePerHour * totalHours);
+
+    const booking = await createSupabaseBooking({
+      roomId,
+      date,
+      startTime,
+      endTime,
+      totalHours,
+      totalAmount,
+      name,
+      email,
+      phone,
+      companyName,
+      notes,
+    });
+
     return NextResponse.json({
       message: "Booking confirmed",
-      ...result,
+      booking: {
+        id: booking.id,
+        date: booking.date,
+        startTime: booking.start_time,
+        endTime: booking.end_time,
+        status: booking.status,
+        totalAmount: booking.total_amount,
+      },
+      room: { name: room.name },
+      slot: { startTime, endTime },
       emailStatus: "mocked-sent",
     });
   } catch (error) {

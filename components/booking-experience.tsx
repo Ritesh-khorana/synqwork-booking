@@ -57,7 +57,6 @@ export function BookingExperience() {
     () => form.slotIds.map((id) => timeSlots.find((slot) => slot.id === id)).filter(Boolean),
     [form.slotIds],
   );
-  const selectedSlot = timeSlots.find((slot) => slot.id === form.slotId);
   const total =
     selectedRoom && selectedSlots.length
       ? Math.round(selectedRoom.pricePerHour * selectedSlots.length)
