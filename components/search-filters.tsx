@@ -16,8 +16,16 @@ export function SearchFilters() {
   useEffect(() => {
     void (async () => {
       const response = await fetch("/api/locations", { cache: "no-store" });
-      const data = await response.json().catch(() => ({ locations: [] }));
-      const unique = Array.from(new Set((data.locations ?? []).map((l: { city?: string }) => l.city).filter(Boolean)));
+      const data = (await response.json().catch(() => ({ locations: [] }))) as {
+        locations?: Array<{ city?: string }>;
+      };
+      const unique = Array.from(
+        new Set(
+          (data.locations ?? [])
+            .map((l) => l.city)
+            .filter((city): city is string => typeof city === "string" && city.length > 0),
+        ),
+      );
       setCities(unique);
     })();
   }, []);
