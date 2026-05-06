@@ -25,11 +25,12 @@ type AdminBooking = {
   id: string;
   date: string;
   startTime: string;
+  endTime: string;
   status: string;
   totalAmount: number;
   room?: { name: string } | null;
-  user?: { name: string; company: string } | null;
-  location?: { city: string } | null;
+  user?: { name: string; email: string; phone: string } | null;
+  location?: { name: string; city: string } | null;
 };
 
 type AdminPayload = {
@@ -313,8 +314,11 @@ export function AdminConsole() {
             <table className="min-w-full text-left text-sm">
               <thead className="text-[#404852]">
                 <tr className="border-b border-black/8">
-                  <th className="py-3 pr-4">User</th>
+                  <th className="py-3 pr-4">Booking ID</th>
+                  <th className="py-3 pr-4">Customer</th>
                   <th className="py-3 pr-4">Room</th>
+                  <th className="py-3 pr-4">Centre</th>
+                  <th className="py-3 pr-4">City</th>
                   <th className="py-3 pr-4">Schedule</th>
                   <th className="py-3 pr-4">Amount</th>
                 </tr>
@@ -322,15 +326,16 @@ export function AdminConsole() {
               <tbody>
                 {payload?.bookings.map((booking) => (
                   <tr key={booking.id} className="border-b border-black/5">
+                    <td className="py-4 pr-4 font-medium">{booking.id}</td>
                     <td className="py-4 pr-4">
                       <p className="font-medium">{booking.user?.name}</p>
-                      <p className="text-[#404852]">{booking.user?.company}</p>
+                      <p className="text-[#404852]">{booking.user?.email}</p>
+                      <p className="text-[#404852]">{booking.user?.phone}</p>
                     </td>
-                    <td className="py-4 pr-4">
-                      <p className="font-medium">{booking.room?.name}</p>
-                      <p className="text-[#404852]">{booking.location?.city}</p>
-                    </td>
-                    <td className="py-4 pr-4">{booking.date}, {booking.startTime}</td>
+                    <td className="py-4 pr-4">{booking.room?.name}</td>
+                    <td className="py-4 pr-4">{booking.location?.name}</td>
+                    <td className="py-4 pr-4">{booking.location?.city}</td>
+                    <td className="py-4 pr-4">{booking.date}, {booking.startTime} - {booking.endTime}</td>
                     <td className="py-4 pr-4 font-medium">{formatCurrency(booking.totalAmount)}</td>
                   </tr>
                 ))}

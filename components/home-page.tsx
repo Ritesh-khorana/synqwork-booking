@@ -5,7 +5,7 @@ import { HeroSearch } from "@/components/hero-search";
 import { RoomCard } from "@/components/room-card";
 import { SectionHeading } from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
-import { locations, rooms } from "@/lib/data";
+import { listCentres, listRooms } from "@/lib/supabase-service";
 
 const testimonials = [
   {
@@ -49,11 +49,9 @@ const steps = [
   },
 ];
 
-export function HomePage() {
-  const featuredRooms = rooms.filter((room) => room.featured).map((room) => ({
-    ...room,
-    location: locations.find((location) => location.id === room.locationId) ?? null,
-  }));
+export async function HomePage() {
+  const [locations, allRooms] = await Promise.all([listCentres(), listRooms()]);
+  const featuredRooms = allRooms.slice(0, 6);
 
   return (
     <div>
@@ -218,4 +216,3 @@ Includes high-speed WiFi, TV screen, and complete privacy.
     </div>
   );
 }
-

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CalendarCheck2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +9,8 @@ export default async function ConfirmationPage({
   const params = await searchParams;
   const bookingId = typeof params.bookingId === "string" ? params.bookingId : "SYNQ-DEMO";
   const room = typeof params.room === "string" ? params.room : "Your selected room";
+  const centre = typeof params.centre === "string" ? params.centre : "";
+  const city = typeof params.city === "string" ? params.city : "";
   const slot = typeof params.slot === "string" ? params.slot : "Scheduled slot";
   const date = typeof params.date === "string" ? params.date : "Upcoming date";
 
@@ -21,17 +22,16 @@ export default async function ConfirmationPage({
         </div>
         <p className="mt-6 text-sm font-semibold uppercase tracking-[0.28em] text-[#404852]">Booking Confirmed</p>
         <h1 className="mt-4 text-4xl font-semibold text-balance">Your meeting room is locked in.</h1>
-        <p className="mt-4 text-lg leading-8 text-[#404852]">
-          Confirmation ID <span className="font-semibold text-black">{bookingId}</span> has been issued for{" "}
-          <span className="font-semibold text-black">{room}</span> on {date}, {slot}.
-        </p>
+        <p className="mt-4 text-lg leading-8 text-[#404852]">Confirmation ID <span className="font-semibold text-black">{bookingId}</span></p>
+        <div className="mt-6 text-left text-[#404852]">
+          <p><span className="font-semibold text-black">Room:</span> {room}</p>
+          <p><span className="font-semibold text-black">Centre:</span> {centre}</p>
+          <p><span className="font-semibold text-black">City:</span> {city}</p>
+          <p><span className="font-semibold text-black">Booking Date:</span> {date}</p>
+          <p><span className="font-semibold text-black">Time:</span> {slot}</p>
+        </div>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link href="/search">
-            <Button>Book Another Room</Button>
-          </Link>
-          <Link href="/admin">
-            <Button variant="ghost">Open Admin Panel</Button>
-          </Link>
+          <a href="/search"><Button>Book Another Room</Button></a>
         </div>
       </div>
     </div>

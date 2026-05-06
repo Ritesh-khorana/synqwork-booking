@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import { timeSlots } from "@/lib/data";
 import { getRoomById, createBooking as createSupabaseBooking } from "@/lib/supabase-service";
 
+function compactBookingId(centreName: string, date: string, bookingId: string) {
+  const centre = centreName.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 5) || "CENTR";
+  const d = date.replaceAll("-", "").slice(2);
+  const suffix = bookingId.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(-4).padStart(4, "0");
+  return `SW-${centre}-${d}${suffix}`;
+}
+
 export async function POST(request: Request) {
   const payload = await request.json();
 
@@ -52,13 +59,14 @@ export async function POST(request: Request) {
       message: "Booking confirmed",
       booking: {
         id: booking.id,
+        displayId: compactBookingId(room.location?.name ?? "CENTRE", booking.date, booking.id),
         date: booking.date,
         startTime: booking.start_time,
         endTime: booking.end_time,
         status: booking.status,
         totalAmount: booking.total_amount,
       },
-      room: { name: room.name },
+      room: { name: room.name, centre: room.location?.name ?? "", city: room.location?.city ?? "" },
       slot: { startTime, endTime },
       emailStatus: "mocked-sent",
     });

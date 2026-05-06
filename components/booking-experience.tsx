@@ -157,9 +157,7 @@ export function BookingExperience() {
     }
 
     router.push(
-      `/confirmation?bookingId=${data.booking.id}&room=${encodeURIComponent(data.room.name)}&slot=${encodeURIComponent(
-        `${data.slot.startTime} - ${data.slot.endTime}`,
-      )}&date=${encodeURIComponent(data.booking.date)}`,
+      `/confirmation?bookingId=${encodeURIComponent(data.booking.displayId ?? data.booking.id)}&room=${encodeURIComponent(data.room.name)}&centre=${encodeURIComponent(data.room.centre ?? "")}&city=${encodeURIComponent(data.room.city ?? "")}&slot=${encodeURIComponent(`${data.slot.startTime} - ${data.slot.endTime}`)}&date=${encodeURIComponent(data.booking.date)}`,
     );
   }
 

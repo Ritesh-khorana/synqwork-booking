@@ -330,7 +330,7 @@ export async function getAdminBookings() {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("bookings")
-    .select("id,date,start_time,end_time,status,total_amount, rooms:rooms(name), centres:centres(city)")
+    .select("id,date,start_time,end_time,status,total_amount,name,email,phone, rooms:rooms(name), centres:centres(name,city)")
     .order("created_at", { ascending: false })
     .limit(50);
   if (error) throw new Error(error.message);
@@ -342,9 +342,10 @@ export async function getAdminBookings() {
     status: "confirmed" | "cancelled";
     total_amount: number;
     rooms: { name: string } | { name: string }[] | null;
-    centres: { city: string } | { city: string }[] | null;
+    email?: string;
+    phone?: string;
+    centres: { name: string; city: string } | { name: string; city: string }[] | null;
     name?: string;
-    company_name?: string | null;
   };
 
   const rows = (data ?? []) as unknown as AdminBookingRow[];
@@ -356,11 +357,12 @@ export async function getAdminBookings() {
       id: b.id,
       date: b.date,
       startTime: b.start_time,
+      endTime: b.end_time,
       status: b.status,
       totalAmount: b.total_amount,
       room: room ? { name: room.name } : null,
-      user: { name: b.name ?? "", company: b.company_name ?? "" },
-      location: centre ? { city: centre.city } : null,
+      user: { name: b.name ?? "", email: b.email ?? "", phone: b.phone ?? "" },
+      location: centre ? { name: centre.name, city: centre.city } : null,
     };
   });
 }
