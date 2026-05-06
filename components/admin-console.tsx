@@ -51,6 +51,9 @@ type AdminLocation = {
 };
 
 export function AdminConsole() {
+  const fallbackLocations: AdminLocation[] = [
+    { id: "", name: "Select location", city: "" },
+  ];
   const [rooms, setRooms] = useState<AdminRoom[]>([]);
   const [locations, setLocations] = useState<AdminLocation[]>([]);
   const [payload, setPayload] = useState<AdminPayload | null>(null);
@@ -62,7 +65,7 @@ export function AdminConsole() {
     type: "Meeting Room",
     capacity: 6,
     pricePerHour: 1500,
-    locationId: "loc_1",
+    locationId: "",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
     amenities: "Screen, WiFi, Whiteboard",
     rating: 4.7,
@@ -92,6 +95,12 @@ export function AdminConsole() {
     void refresh();
   }, []);
 
+  useEffect(() => {
+    if (form.locationId) return;
+    if (!locations.length) return;
+    setForm((current) => ({ ...current, locationId: locations[0]!.id }));
+  }, [form.locationId, locations]);
+
   async function saveRoom() {
     setAdminError("");
     const payload = {
@@ -108,6 +117,11 @@ export function AdminConsole() {
       availabilityScore: Number(form.availabilityScore),
       featured: false,
     };
+
+    if (!payload.locationId) {
+      setAdminError("Please select a valid location.");
+      return;
+    }
 
     if (editingId) {
       const response = await fetch(`/api/admin/rooms/${editingId}`, {
@@ -139,7 +153,7 @@ export function AdminConsole() {
       type: "Meeting Room",
       capacity: 6,
       pricePerHour: 1500,
-      locationId: "loc_1",
+      locationId: locations[0]?.id ?? "",
       image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
       amenities: "Screen, WiFi, Whiteboard",
       rating: 4.7,
@@ -197,14 +211,9 @@ export function AdminConsole() {
           <div>
             <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Location</label>
           <Select value={form.locationId} onChange={(event) => setForm((current) => ({ ...current, locationId: event.target.value }))}>
-            {(locations.length ? locations : [
-              { id: "loc_1", name: "Cyber Greens", city: "Gurugram" },
-              { id: "loc_2", name: "GSC", city: "New Delhi" },
-              { id: "loc_3", name: "SAS Tower", city: "Noida" },
-              { id: "loc_4", name: "Aloft", city: "Chennai" },
-            ]).map((location) => (
+            {(locations.length ? locations : fallbackLocations).map((location) => (
               <option key={location.id} value={location.id}>
-                {location.name} ({location.city})
+                {location.city ? `${location.name} (${location.city})` : location.name}
               </option>
             ))}
           </Select>
@@ -298,4 +307,3 @@ export function AdminConsole() {
     </div>
   );
 }
-

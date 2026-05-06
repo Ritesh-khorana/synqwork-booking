@@ -8,7 +8,9 @@ export async function POST(request: Request) {
   try {
     const roomId = payload.roomId as string | undefined;
     const date = payload.date as string | undefined;
-    const slotIds = (payload.slotIds as string[] | undefined) ?? [];
+    const rawSlotIds = (payload.slotIds as string[] | undefined) ?? [];
+    const fallbackSlotId = payload.slotId as string | undefined;
+    const slotIds = rawSlotIds.length > 0 ? rawSlotIds : fallbackSlotId ? [fallbackSlotId] : [];
     const name = payload.name as string | undefined;
     const email = payload.email as string | undefined;
     const phone = (payload.contactNumber as string | undefined) ?? (payload.phone as string | undefined);
