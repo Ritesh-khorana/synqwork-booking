@@ -52,14 +52,24 @@ type AdminLocation = {
 
 export function AdminConsole() {
   const fallbackLocations: AdminLocation[] = [
-    { id: "", name: "Select location", city: "" },
+    { id: "fb_delhi_aloft_aerocity", name: "Aloft Aerocity", city: "Delhi" },
+    { id: "fb_gurgaon_sas_towers", name: "SAS Towers", city: "Gurgaon" },
+    { id: "fb_gurgaon_dlf_cyber_greens", name: "DLF Cyber Greens", city: "Gurgaon" },
+    { id: "fb_gurgaon_gsc_towers", name: "GSC Towers", city: "Gurgaon" },
+    { id: "fb_noida_ks_corporate_towers", name: "KS Corporate Towers", city: "Noida" },
+    { id: "fb_mumbai_sahar_plaza", name: "Sahar Plaza", city: "Mumbai" },
+    { id: "fb_faridabad_sahibabad_centre", name: "Sahibabad Centre", city: "Faridabad" },
+    { id: "fb_chennai_olympia_tech_park", name: "Olympia Tech Park", city: "Chennai" },
   ];
+  const cityOrder = ["Delhi", "Gurgaon", "Noida", "Mumbai", "Faridabad", "Chennai"];
   const [rooms, setRooms] = useState<AdminRoom[]>([]);
   const [locations, setLocations] = useState<AdminLocation[]>([]);
   const [payload, setPayload] = useState<AdminPayload | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [adminError, setAdminError] = useState("");
   const [dbConfigured, setDbConfigured] = useState(true);
+  const effectiveLocations = locations.length ? locations : fallbackLocations;
+  const cityOptions = cityOrder.filter((city) => effectiveLocations.some((location) => location.city === city));
   const [form, setForm] = useState({
     name: "",
     type: "Meeting Room",
@@ -95,11 +105,21 @@ export function AdminConsole() {
     void refresh();
   }, []);
 
+  const selectedCity = form.locationId
+    ? (effectiveLocations.find((location) => location.id === form.locationId)?.city ?? "")
+    : "";
+  const centresForSelectedCity = selectedCity
+    ? effectiveLocations.filter((location) => location.city === selectedCity)
+    : [];
+
   useEffect(() => {
     if (form.locationId) return;
-    if (!locations.length) return;
-    setForm((current) => ({ ...current, locationId: locations[0]!.id }));
-  }, [form.locationId, locations]);
+    const firstCity = cityOptions[0];
+    if (!firstCity) return;
+    const firstCentre = effectiveLocations.find((location) => location.city === firstCity);
+    if (!firstCentre) return;
+    setForm((current) => ({ ...current, locationId: firstCentre.id }));
+  }, [cityOptions, effectiveLocations, form.locationId]);
 
   async function saveRoom() {
     setAdminError("");
@@ -153,7 +173,7 @@ export function AdminConsole() {
       type: "Meeting Room",
       capacity: 6,
       pricePerHour: 1500,
-      locationId: locations[0]?.id ?? "",
+      locationId: "",
       image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80",
       amenities: "Screen, WiFi, Whiteboard",
       rating: 4.7,
@@ -208,15 +228,37 @@ export function AdminConsole() {
             <Input type="number" placeholder="Capacity" value={form.capacity} onChange={(event) => setForm((current) => ({ ...current, capacity: Number(event.target.value) }))} />
             <Input type="number" placeholder="Price / hour" value={form.pricePerHour} onChange={(event) => setForm((current) => ({ ...current, pricePerHour: Number(event.target.value) }))} />
           </div>
-          <div>
-            <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Location</label>
-          <Select value={form.locationId} onChange={(event) => setForm((current) => ({ ...current, locationId: event.target.value }))}>
-            {(locations.length ? locations : fallbackLocations).map((location) => (
-              <option key={location.id} value={location.id}>
-                {location.city ? `${location.name} (${location.city})` : location.name}
-              </option>
-            ))}
-          </Select>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">City</label>
+              <Select
+                value={selectedCity}
+                onChange={(event) => {
+                  const city = event.target.value;
+                  const firstCentre = effectiveLocations.find((location) => location.city === city);
+                  setForm((current) => ({ ...current, locationId: firstCentre?.id ?? "" }));
+                }}
+              >
+                {cityOptions.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div>
+              <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Centre</label>
+              <Select
+                value={form.locationId}
+                onChange={(event) => setForm((current) => ({ ...current, locationId: event.target.value }))}
+              >
+                {centresForSelectedCity.map((location) => (
+                  <option key={location.id} value={location.id}>
+                    {location.name}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
           <Input placeholder="Image URL" value={form.image} onChange={(event) => setForm((current) => ({ ...current, image: event.target.value }))} />
           <Input placeholder="Amenities separated by commas" value={form.amenities} onChange={(event) => setForm((current) => ({ ...current, amenities: event.target.value }))} />
