@@ -111,6 +111,7 @@ export function AdminConsole() {
   const centresForSelectedCity = selectedCity
     ? effectiveLocations.filter((location) => location.city === selectedCity)
     : [];
+  const selectedCentre = effectiveLocations.find((location) => location.id === form.locationId) ?? null;
 
   useEffect(() => {
     if (form.locationId) return;
@@ -130,6 +131,8 @@ export function AdminConsole() {
       capacity: Number(form.capacity),
       pricePerHour: Number(form.pricePerHour),
       locationId: form.locationId,
+      centreName: selectedCentre?.name ?? "",
+      city: selectedCentre?.city ?? "",
       image: form.image,
       amenities: form.amenities.split(",").map((item) => item.trim()),
       rating: Number(form.rating),

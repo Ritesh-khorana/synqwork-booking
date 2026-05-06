@@ -2,15 +2,6 @@ import { NextResponse } from "next/server";
 import { createRoom, listAdminRooms } from "@/lib/supabase-service";
 import { getSupabaseClient } from "@/lib/supabase";
 
-const fallbackCentreMap: Record<string, { name: string; city: string; address: string }> = {
-  fb_delhi_aloft_aerocity: { name: "Aloft Aerocity", city: "Delhi", address: "Aloft Aerocity, Delhi" },
-  fb_gurgaon_sas_towers: { name: "SAS Towers", city: "Gurgaon", address: "SAS Towers, Gurgaon" },
-  fb_gurgaon_dlf_cyber_greens: { name: "DLF Cyber Greens", city: "Gurgaon", address: "DLF Cyber Greens, Gurgaon" },
-  fb_gurgaon_gsc_towers: { name: "GSC Towers", city: "Gurgaon", address: "GSC Towers, Gurgaon" },
-  fb_noida_ks_corporate_towers: { name: "KS Corporate Towers", city: "Noida", address: "KS Corporate Towers, Noida" },
-  fb_mumbai_sahar_plaza: { name: "Sahar Plaza", city: "Mumbai", address: "Sahar Plaza, Mumbai" },
-};
-
 function isUuid(value: string) {
   return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 }
@@ -35,16 +26,17 @@ export async function POST(request: Request) {
     }
 
     if (!isUuid(centreId)) {
-      const fallback = fallbackCentreMap[centreId];
-      if (!fallback) {
-        return NextResponse.json({ error: "Invalid location selected." }, { status: 400 });
+      const fallbackName = (payload.centreName as string | undefined)?.trim();
+      const fallbackCity = (payload.city as string | undefined)?.trim();
+      if (!fallbackName || !fallbackCity) {
+        return NextResponse.json({ error: "Invalid location selected. Missing centre details." }, { status: 400 });
       }
       const supabase = getSupabaseClient();
       const { data: existing, error: existingError } = await supabase
         .from("centres")
         .select("id")
-        .eq("name", fallback.name)
-        .eq("city", fallback.city)
+        .eq("name", fallbackName)
+        .eq("city", fallbackCity)
         .limit(1)
         .maybeSingle();
       if (existingError) throw new Error(existingError.message);
@@ -54,7 +46,7 @@ export async function POST(request: Request) {
       } else {
         const { data: createdRows, error: createCentreError } = await supabase
           .from("centres")
-          .insert([{ name: fallback.name, city: fallback.city, address: fallback.address }])
+          .insert([{ name: fallbackName, city: fallbackCity, address: `${fallbackName}, ${fallbackCity}` }])
           .select("id");
         if (createCentreError) throw new Error(createCentreError.message);
         const created = Array.isArray(createdRows) ? createdRows[0] : createdRows;
