@@ -339,6 +339,7 @@ export async function getAdminBookings() {
     id: string;
     date: string;
     start_time: string;
+    end_time: string;
     status: "confirmed" | "cancelled";
     total_amount: number;
     rooms: { name: string } | { name: string }[] | null;
