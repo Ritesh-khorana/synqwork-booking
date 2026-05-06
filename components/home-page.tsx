@@ -52,6 +52,7 @@ const steps = [
 export async function HomePage() {
   const [locations, allRooms] = await Promise.all([listCentres(), listRooms()]);
   const featuredRooms = allRooms.slice(0, 6);
+  const defaultLocationImage = "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80";
 
   return (
     <div>
@@ -115,12 +116,12 @@ Includes high-speed WiFi, TV screen, and complete privacy.
           {locations.map((location) => (
             <div key={location.id} className="overflow-hidden rounded-[30px] border border-black/8 bg-white">
               <div className="relative h-56">
-                <Image src={location.heroImage} alt={location.name} fill className="object-cover" />
+                <Image src={defaultLocationImage} alt={location.name} fill className="object-cover" />
               </div>
               <div className="p-6">
                 <p className="text-sm uppercase tracking-[0.18em] text-[#404852]">{location.city}</p>
                 <h3 className="mt-2 text-2xl font-semibold">{location.name}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#404852]">{location.description}</p>
+                <p className="mt-3 text-sm leading-6 text-[#404852]">Premium meeting rooms and managed office inventory.</p>
                 <p className="mt-4 text-sm text-black">{location.address}</p>
               </div>
             </div>
