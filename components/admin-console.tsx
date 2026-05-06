@@ -51,16 +51,6 @@ type AdminLocation = {
 };
 
 export function AdminConsole() {
-  const fallbackLocations: AdminLocation[] = [
-    { id: "fb_delhi_aloft_aerocity", name: "Aloft Aerocity", city: "Delhi" },
-    { id: "fb_gurgaon_sas_towers", name: "SAS Towers", city: "Gurgaon" },
-    { id: "fb_gurgaon_dlf_cyber_greens", name: "DLF Cyber Greens", city: "Gurgaon" },
-    { id: "fb_gurgaon_gsc_towers", name: "GSC Towers", city: "Gurgaon" },
-    { id: "fb_noida_ks_corporate_towers", name: "KS Corporate Towers", city: "Noida" },
-    { id: "fb_mumbai_sahar_plaza", name: "Sahar Plaza", city: "Mumbai" },
-    { id: "fb_faridabad_sahibabad_centre", name: "Sahibabad Centre", city: "Faridabad" },
-    { id: "fb_chennai_olympia_tech_park", name: "Olympia Tech Park", city: "Chennai" },
-  ];
   const cityOrder = ["Delhi", "Gurgaon", "Noida", "Mumbai", "Faridabad", "Chennai"];
   const [rooms, setRooms] = useState<AdminRoom[]>([]);
   const [locations, setLocations] = useState<AdminLocation[]>([]);
@@ -68,7 +58,7 @@ export function AdminConsole() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [adminError, setAdminError] = useState("");
   const [dbConfigured, setDbConfigured] = useState(true);
-  const effectiveLocations = locations.length ? locations : fallbackLocations;
+  const effectiveLocations = locations;
   const cityOptions = cityOrder.filter((city) => effectiveLocations.some((location) => location.city === city));
   const [form, setForm] = useState({
     name: "",

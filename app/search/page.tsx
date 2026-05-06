@@ -1,7 +1,7 @@
 import { SearchFilters } from "@/components/search-filters";
 import { RoomCard } from "@/components/room-card";
 import { SectionHeading } from "@/components/section-heading";
-import { listRooms } from "@/lib/booking-service";
+import { listRooms } from "@/lib/supabase-service";
 
 export default async function SearchPage({
   searchParams,
@@ -10,7 +10,12 @@ export default async function SearchPage({
 }) {
   const params = await searchParams;
   const rooms = await listRooms({
-    location: typeof params.location === "string" ? params.location : undefined,
+    location:
+      typeof params.location === "string"
+        ? params.location.toLowerCase() === "new delhi"
+          ? "Delhi"
+          : params.location
+        : undefined,
     date: typeof params.date === "string" ? params.date : undefined,
     slot: typeof params.slot === "string" ? params.slot : undefined,
     capacity: typeof params.capacity === "string" ? Number(params.capacity) : undefined,

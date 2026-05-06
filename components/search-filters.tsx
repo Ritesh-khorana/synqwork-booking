@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,21 @@ export function SearchFilters() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const today = new Date().toISOString().slice(0, 10);
+  const [cities, setCities] = useState<string[]>([]);
+
+  useEffect(() => {
+    void (async () => {
+      const response = await fetch("/api/locations", { cache: "no-store" });
+      const data = await response.json().catch(() => ({ locations: [] }));
+      const unique = Array.from(new Set((data.locations ?? []).map((l: { city?: string }) => l.city).filter(Boolean)));
+      setCities(unique);
+    })();
+  }, []);
+
+  const normalizedLocation = useMemo(() => {
+    const value = searchParams.get("location") ?? "";
+    return value.toLowerCase() === "new delhi" ? "Delhi" : value;
+  }, [searchParams]);
 
   function onSubmit(formData: FormData) {
     const params = new URLSearchParams(searchParams.toString());
@@ -27,14 +43,13 @@ export function SearchFilters() {
     <form action={onSubmit} className="glass-panel grid gap-4 rounded-[30px] p-5 md:grid-cols-5 md:items-end">
       <div>
         <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-[#404852]">Location</label>
-        <Select name="location" defaultValue={searchParams.get("location") ?? ""}>
+        <Select name="location" defaultValue={normalizedLocation}>
           <option value="">Any city</option>
-          <option value="Gurugram">Gurugram</option>
-          <option value="Bengaluru">Bengaluru</option>
-          <option value="Mumbai">Mumbai</option>
-          <option value="New Delhi">New Delhi</option>
-          <option value="Noida">Noida</option>
-          <option value="Chennai">Chennai</option>
+          {cities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
         </Select>
       </div>
       <div>
