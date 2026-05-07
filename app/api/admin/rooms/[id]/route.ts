@@ -11,6 +11,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       name: payload.name,
       capacity: payload.capacity !== undefined ? Number(payload.capacity) : undefined,
       pricePerHour: payload.pricePerHour !== undefined ? Number(payload.pricePerHour) : undefined,
+      type: payload.type,
+      amenities: Array.isArray(payload.amenities) ? payload.amenities : undefined,
       imageUrl: payload.image ?? payload.imageUrl,
       description: Array.isArray(payload.amenities) ? payload.amenities.join(", ") : payload.description,
       isActive: payload.isActive,

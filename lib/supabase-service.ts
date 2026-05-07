@@ -24,6 +24,34 @@ type RoomRow = {
   created_at: string;
 };
 
+type RoomMeta = { type?: string; amenities?: string[]; description?: string };
+
+function parseRoomMeta(description: string | null): RoomMeta {
+  if (!description) return {};
+  try {
+    if (description.startsWith("{")) {
+      const parsed = JSON.parse(description) as RoomMeta;
+      return parsed ?? {};
+    }
+  } catch {}
+  return { amenities: description.split(",").map((a) => a.trim()).filter(Boolean) };
+}
+
+function serializeRoomMeta(input: { type?: string; amenities?: string[]; description?: string }) {
+  return JSON.stringify({
+    type: input.type ?? "Meeting Room",
+    amenities: input.amenities ?? [],
+    description: input.description ?? "",
+  });
+}
+
+function compactBookingId(centreName: string, date: string, bookingId: string) {
+  const centre = centreName.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 5) || "CENTR";
+  const d = date.replaceAll("-", "").slice(2);
+  const suffix = bookingId.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(-4).padStart(4, "0");
+  return `SW-${centre}-${d}${suffix}`;
+}
+
 type BookingRow = {
   id: string;
   room_id: string;
@@ -86,15 +114,16 @@ export async function listRooms(filters: SearchFilters = {}) {
   const rows = (data ?? []) as unknown as (RoomRow & { centres: CentreRow | CentreRow[] | null })[];
   let mapped = rows.map((room) => {
     const centre = Array.isArray(room.centres) ? room.centres[0] : room.centres;
+    const meta = parseRoomMeta(room.description);
     return ({
     id: room.id,
     locationId: room.centre_id,
     name: room.name,
     slug: room.name.toLowerCase().replaceAll(" ", "-"),
-    type: "Meeting Room",
+    type: meta.type ?? "Meeting Room",
     capacity: room.capacity,
     pricePerHour: room.price_per_hour,
-    amenities: [],
+    amenities: meta.amenities ?? [],
     image: room.image_url ?? "",
     rating: 4.7,
     reviewCount: 12,
@@ -139,11 +168,12 @@ export async function listAdminRooms() {
   })[];
   return rows.map((room) => {
     const centre = Array.isArray(room.centres) ? room.centres[0] : room.centres;
+    const meta = parseRoomMeta(room.description);
     return ({
     id: room.id,
     locationId: room.centre_id,
     name: room.name,
-    type: "Meeting Room",
+    type: meta.type ?? "Meeting Room",
     capacity: room.capacity,
     pricePerHour: room.price_per_hour,
     availabilityScore: 80,
@@ -170,15 +200,16 @@ export async function getRoomById(id: string) {
   if (!data) return null;
   const room = data as unknown as RoomRow & { centres: CentreRow | CentreRow[] | null };
   const centre = Array.isArray(room.centres) ? room.centres[0] : room.centres;
+  const meta = parseRoomMeta(room.description);
   return {
     id: room.id,
     locationId: room.centre_id,
     name: room.name,
     slug: room.name.toLowerCase().replaceAll(" ", "-"),
-    type: "Meeting Room",
+    type: meta.type ?? "Meeting Room",
     capacity: room.capacity,
     pricePerHour: room.price_per_hour,
-    amenities: [],
+    amenities: meta.amenities ?? [],
     image: room.image_url ?? "",
     rating: 4.7,
     reviewCount: 12,
@@ -232,6 +263,8 @@ export async function createRoom(input: {
   capacity: number;
   pricePerHour: number;
   imageUrl?: string;
+  type?: string;
+  amenities?: string[];
   description?: string;
   isActive?: boolean;
 }) {
@@ -242,7 +275,11 @@ export async function createRoom(input: {
     capacity: input.capacity,
     price_per_hour: input.pricePerHour,
     image_url: input.imageUrl ?? null,
-    description: input.description ?? null,
+    description: serializeRoomMeta({
+      type: input.type,
+      amenities: input.amenities,
+      description: input.description,
+    }),
     is_active: input.isActive ?? true,
   };
 
@@ -259,6 +296,8 @@ export async function updateRoom(id: string, input: Partial<{
   name: string;
   capacity: number;
   pricePerHour: number;
+  type: string;
+  amenities: string[];
   imageUrl: string;
   description: string;
   isActive: boolean;
@@ -270,7 +309,15 @@ export async function updateRoom(id: string, input: Partial<{
   if (input.capacity !== undefined) patch.capacity = input.capacity;
   if (input.pricePerHour !== undefined) patch.price_per_hour = input.pricePerHour;
   if (input.imageUrl !== undefined) patch.image_url = input.imageUrl;
-  if (input.description !== undefined) patch.description = input.description;
+  if (input.type !== undefined || input.amenities !== undefined || input.description !== undefined) {
+    const current = await supabase.from("rooms").select("description").eq("id", id).maybeSingle();
+    const existingMeta = parseRoomMeta((current.data as { description?: string | null } | null)?.description ?? null);
+    patch.description = serializeRoomMeta({
+      type: input.type ?? existingMeta.type,
+      amenities: input.amenities ?? existingMeta.amenities,
+      description: input.description ?? existingMeta.description,
+    });
+  }
   if (input.isActive !== undefined) patch.is_active = input.isActive;
 
   const { data, error } = await supabase.from("rooms").update(patch).eq("id", id).select("*").single();
@@ -356,6 +403,7 @@ export async function getAdminBookings() {
     const centre = Array.isArray(b.centres) ? b.centres[0] : b.centres;
     return {
       id: b.id,
+      displayId: compactBookingId(centre?.name ?? "CENTRE", b.date, b.id),
       date: b.date,
       startTime: b.start_time,
       endTime: b.end_time,

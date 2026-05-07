@@ -60,6 +60,8 @@ export async function POST(request: Request) {
       name: payload.name,
       capacity: Number(payload.capacity),
       pricePerHour: Number(payload.pricePerHour),
+      type: payload.type,
+      amenities: Array.isArray(payload.amenities) ? payload.amenities : [],
       imageUrl: payload.image ?? payload.imageUrl ?? null,
       description: Array.isArray(payload.amenities) ? payload.amenities.join(", ") : payload.description ?? null,
       isActive: true,

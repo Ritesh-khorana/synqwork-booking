@@ -73,11 +73,9 @@ export function RoomCard({ room }: RoomCardProps) {
           <Link href={`/booking?roomId=${room.id}`} className="flex-1">
             <Button className="w-full">Book Now</Button>
           </Link>
-          <Link href={`/search?roomId=${room.id}`} className="flex-1">
-            <Button variant="ghost" className="w-full">
-              View Details
-            </Button>
-          </Link>
+          <a href="tel:+918700128721" className="flex-1">
+            <Button variant="ghost" className="w-full">Call Now</Button>
+          </a>
         </div>
       </div>
     </article>

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { timeSlots } from "@/lib/data";
 import { getRoomById, createBooking as createSupabaseBooking } from "@/lib/supabase-service";
+import { sendBookingEmails } from "@/lib/email";
 
 function compactBookingId(centreName: string, date: string, bookingId: string) {
   const centre = centreName.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 5) || "CENTR";
@@ -54,12 +55,26 @@ export async function POST(request: Request) {
       companyName,
       notes,
     });
+    const displayId = compactBookingId(room.location?.name ?? "CENTRE", booking.date, booking.id);
+    const slotLabel = `${startTime} - ${endTime}`;
+    await sendBookingEmails({
+      bookingId: displayId,
+      customerEmail: email,
+      customerName: name,
+      roomName: room.name,
+      centreName: room.location?.name ?? "",
+      city: room.location?.city ?? "",
+      address: room.location ? `${room.location.name}, ${room.location.city}` : "",
+      date: booking.date,
+      time: slotLabel,
+      amount: booking.total_amount,
+    });
 
     return NextResponse.json({
       message: "Booking confirmed",
       booking: {
         id: booking.id,
-        displayId: compactBookingId(room.location?.name ?? "CENTRE", booking.date, booking.id),
+        displayId,
         date: booking.date,
         startTime: booking.start_time,
         endTime: booking.end_time,

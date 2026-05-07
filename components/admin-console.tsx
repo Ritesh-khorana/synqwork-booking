@@ -23,6 +23,7 @@ type AdminRoom = {
 
 type AdminBooking = {
   id: string;
+  displayId?: string;
   date: string;
   startTime: string;
   endTime: string;
@@ -326,7 +327,7 @@ export function AdminConsole() {
               <tbody>
                 {payload?.bookings.map((booking) => (
                   <tr key={booking.id} className="border-b border-black/5">
-                    <td className="py-4 pr-4 font-medium">{booking.id}</td>
+                    <td className="py-4 pr-4 font-medium">{booking.displayId ?? booking.id}</td>
                     <td className="py-4 pr-4">
                       <p className="font-medium">{booking.user?.name}</p>
                       <p className="text-[#404852]">{booking.user?.email}</p>
